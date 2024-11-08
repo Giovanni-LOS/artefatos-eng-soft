@@ -1,0 +1,70 @@
+@startuml
+actor User as US
+actor Admin as AD
+
+rectangle IfbShare {
+    (Cadastrar-se) as Cadastrar
+    (Fazer Login) as Login
+    (Verificar Informações) as VerificarInfo
+    (Mensagem de erro) as Error
+
+}
+
+US -> Cadastrar
+US -> Login
+Login --> VerificarInfo : <<include>>
+Cadastrar --> VerificarInfo : <<include>>
+Error --> Login : <<extend>>
+Error --> Cadastrar : <<extend>>
+@enduml
+
+
+actor "Usuário Autenticado" as Usuario
+actor "Administrador" as Admin
+actor "Sistema de Notificação" as Notificacao
+
+rectangle Plataforma {
+    (Cadastrar-se) as Cadastrar
+    (Recuperar Senha) as RecuperarSenha
+    (Editar Perfil) as EditarPerfil
+    (Visualizar Perfil) as VisualizarPerfil
+    (Fazer Upload de Arquivo) as Upload
+    (Baixar Arquivo) as Download
+    (Acessar Feed) as Feed
+    (Acessar Fórum) as Forum
+    (Criar Tópico no Fórum) as CriarTopico
+    (Comentar em Tópico) as Comentar
+    (Configurar Notificações) as ConfigurarNotificacoes
+    (Pesquisar Materiais) as Pesquisar
+    (Filtrar Resultados) as Filtrar
+    (Navegar por Categorias) as Categorias
+    (Gerenciar Usuários) as GerenciarUsuarios
+    (Moderador Conteúdos) as ModerarConteudo
+    (Gerenciar Categorias) as GerenciarCategorias
+    (Enviar Notificação) as EnviarNotificacao
+}
+
+Usuario --> Cadastrar
+Usuario --> Login
+Usuario --> RecuperarSenha
+Usuario --> EditarPerfil
+Usuario --> VisualizarPerfil
+Usuario --> Upload
+Usuario --> Download
+Usuario --> Feed
+Usuario --> Forum
+Usuario --> CriarTopico
+Usuario --> Comentar
+Usuario --> ConfigurarNotificacoes
+Usuario --> Pesquisar
+Usuario --> Filtrar
+Usuario --> Categorias
+
+Admin --> GerenciarUsuarios
+Admin --> ModerarConteudo
+Admin --> GerenciarCategorias
+Admin --> EnviarNotificacao
+
+Notificacao --> EnviarNotificacao
+EnviarNotificacao --> Usuario : Notificação de novas postagens ou comentários
+
