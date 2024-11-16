@@ -7,64 +7,87 @@ rectangle IfbShare {
     (Fazer Login) as Login
     (Verificar Informações) as VerificarInfo
     (Mensagem de erro) as Error
+    (Recuperar senha) as Recuperar
+    (Editar perfil) as EditarPerfil
+    (Visualizar perfil) as VisualizarPerfil
+    (Fazer upload de arquivos) as UploadArquivo
+    (Fazer download de materiais) as DownloadMaterias
+    (Pesquisar materiais) as Pesquisar
+    (Navegar por categorias) as NavegarCategorias
+    (Comentar em tópicos) as ComentarTopico
+    (Criar tópicos no fórum) as CriarTopico
+    (Configurar notificações) as ConfigNotificacao
+    (Gerenciar usuários) as GerenciarUsuarios
+    (Moderar conteúdos) as ModerarConteudo
+    (Gerenciar categorias) as GerenciarCategorias
+    (Enviar notificações) as EnviarNotificacao
+    (Filtrar resultados) as Filtrar
+    (Salvar no banco de dados) as Salvar
+    (Extrair informações do banco de dados) as BD
+    (Retorna a Solicitação) as Return
+    (Mensagem de Sucesso) as Sucesso
 
 }
 
 US -> Cadastrar
 US -> Login
-Login --> VerificarInfo : <<include>>
-Cadastrar --> VerificarInfo : <<include>>
-Error --> Login : <<extend>>
-Error --> Cadastrar : <<extend>>
+US -> Recuperar
+US -> EditarPerfil
+US -> VisualizarPerfil
+US -> UploadArquivo
+US -> DownloadMaterias
+US -> NavegarCategorias
+US -> ComentarTopico
+US -> CriarTopico
+US -> ConfigNotificacao
+US --> Pesquisar
+AD --> GerenciarUsuarios
+AD --> ModerarConteudo
+AD --> GerenciarCategorias
+AD --> EnviarNotificacao
+Login -.-> VerificarInfo : <<include>>
+Cadastrar -.-> VerificarInfo : <<include>>
+EditarPerfil-.-> VerificarInfo : <<include>>
+VerificarInfo -.-> Salvar :  <<include>>
+Recuperar -.-> VerificarInfo : <<include>>
+Pesquisar -.-> Filtrar : <<include>>
+UploadArquivo -.-> VerificarInfo : <<include>>
+Error -.-> Login : <<extend>>
+Error -.-> Cadastrar : <<extend>>
+Error -.-> Recuperar : <<extend>>
+Error -.-> EditarPerfil : <<extend>>
+Error -.-> VisualizarPerfil : <<extend>>
+Error -.-> UploadArquivo : <<extend>>
+Sucesso -.-> Login : <<extend>>
+Sucesso -.-> Cadastrar : <<extend>>
+Sucesso -.-> Recuperar : <<extend>>
+Sucesso -.-> EditarPerfil : <<extend>>
+Sucesso -.-> UploadArquivo : <<extend>>
+Return -.-> VisualizarPerfil : <<extend>>
+VisualizarPerfil -.-> BD : <<include>>
+DownloadMaterias -.-> BD : <<include>>
+DownloadMaterias -.-> VerificarInfo : <<include>>
+Error -.-> DownloadMaterias : <<extend>>
+Return -.-> DownloadMaterias : <<extend>>
+NavegarCategorias -.-> BD : <<include>>
+Return -.-> NavegarCategorias : <<extend>>
+ComentarTopico -.-> VerificarInfo : <<include>>
+Return -.-> Pesquisar : <<extend>>
+Filtrar -.-> BD : <<include>>
+ConfigNotificacao -.-> VerificarInfo : <<include>>
+Sucesso -.-> ConfigNotificacao : <<extend>>
+CriarTopico -.-> VerificarInfo : <<include>>
+Sucesso -.-> CriarTopico : <<extend>>
+ModerarConteudo -.-> VerificarInfo : <<include>>
+GerenciarUsuarios -.-> VerificarInfo : <<include>>
+GerenciarCategorias -.-> VerificarInfo : <<include>>
+EnviarNotificacao -.-> VerificarInfo : <<include>>
+Error -.-> ModerarConteudo : <<extend>>
+Error -.-> GerenciarUsuarios : <<extend>>
+Error -.-> GerenciarCategorias : <<extend>>
+Error -.-> EnviarNotificacao : <<extend>>
+Sucesso -.-> ModerarConteudo : <<extend>>
+Sucesso -.-> GerenciarUsuarios : <<extend>>
+Sucesso -.-> GerenciarCategorias : <<extend>>
+Sucesso -.-> EnviarNotificacao : <<extend>>
 @enduml
-
-
-actor "Usuário Autenticado" as Usuario
-actor "Administrador" as Admin
-actor "Sistema de Notificação" as Notificacao
-
-rectangle Plataforma {
-    (Cadastrar-se) as Cadastrar
-    (Recuperar Senha) as RecuperarSenha
-    (Editar Perfil) as EditarPerfil
-    (Visualizar Perfil) as VisualizarPerfil
-    (Fazer Upload de Arquivo) as Upload
-    (Baixar Arquivo) as Download
-    (Acessar Feed) as Feed
-    (Acessar Fórum) as Forum
-    (Criar Tópico no Fórum) as CriarTopico
-    (Comentar em Tópico) as Comentar
-    (Configurar Notificações) as ConfigurarNotificacoes
-    (Pesquisar Materiais) as Pesquisar
-    (Filtrar Resultados) as Filtrar
-    (Navegar por Categorias) as Categorias
-    (Gerenciar Usuários) as GerenciarUsuarios
-    (Moderador Conteúdos) as ModerarConteudo
-    (Gerenciar Categorias) as GerenciarCategorias
-    (Enviar Notificação) as EnviarNotificacao
-}
-
-Usuario --> Cadastrar
-Usuario --> Login
-Usuario --> RecuperarSenha
-Usuario --> EditarPerfil
-Usuario --> VisualizarPerfil
-Usuario --> Upload
-Usuario --> Download
-Usuario --> Feed
-Usuario --> Forum
-Usuario --> CriarTopico
-Usuario --> Comentar
-Usuario --> ConfigurarNotificacoes
-Usuario --> Pesquisar
-Usuario --> Filtrar
-Usuario --> Categorias
-
-Admin --> GerenciarUsuarios
-Admin --> ModerarConteudo
-Admin --> GerenciarCategorias
-Admin --> EnviarNotificacao
-
-Notificacao --> EnviarNotificacao
-EnviarNotificacao --> Usuario : Notificação de novas postagens ou comentários
-
