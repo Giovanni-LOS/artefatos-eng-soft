@@ -1,0 +1,116 @@
+@startuml
+
+class Usuario {
+    - id_usuario: int
+    - nickname: String
+    - nome: String
+    # email: String 
+    # senha: String
+    + cadastrarUsuario(email: String, senha: String, nome: String, nickname: String): boolean
+    + login(email: String, senha: String): boolean
+    + editarPerfil(nome: String, nickname: String, senha: String): boolean
+    + visualizarPerfil(id_usuario: int): Perfil
+}
+
+class Perfil {
+    - curso: String
+    - semestre: int
+    - bio: String
+    - data_de_aniversario: Date
+    - idade: int
+    - foto_perfil: Binario
+    + editarPerfil(curso: String, semestre: int, bio: String, foto_perfil: Binario): boolean
+}
+
+class Material {
+    - id_material: int
+    - id_usuario: int
+    - titulo: String
+    - descricao: String
+    - tipo_arquivo: String
+    - data_upload: Date
+    - arquivo: Binario
+    - categoria: String
+    - avaliacao_media: float
+    + uploadMaterial(titulo: String, descricao: String, arquivo: Binario, categoria: String): boolean
+    + downloadMaterial(id_material: int): Binario
+    + avaliarMaterial(id_material: int, nota: int): boolean
+}
+
+class Postagem {
+    - id_postagem: int
+    - id_material: int
+    - data_postagem: Date
+    - tipo_postagem: String
+    - titulo: String
+    + comentarPostagem(id_postagem: int, comentario: String): boolean
+}
+
+class Topico {
+    - id_topico: int
+    - id_usuario: int
+    - titulo: String
+    - conteudo: String
+    - data_criacao: Date
+    - categoria: String
+    + criarTopico(titulo: String, conteudo: String, categoria: String): boolean
+    + responderTopico(id_topico: int, conteudo: String): boolean
+}
+
+class Comentario {
+    - id_comentario: int
+    - id_topico: int
+    - id_usuario: int
+    - conteudo: String
+    - data_comentario: Date
+    + criarComentario(id_topico: int, conteudo: String): boolean
+}
+
+class Notificacao {
+    - id_notificacao: int
+    - id_usuario: int
+    - tipo_notificacao: String
+    - conteudo: String
+    - status: boolean
+    - data_envio: Date
+    + enviarNotificacao(id_usuario: int, conteudo: String): boolean
+    + configurarNotificacoes(preferencias: Map<String, boolean>): boolean
+}
+
+class Pesquisa {
+    - palavra_chave: String
+    - categoria: String
+    - tipo_documento: String
+    - data_postagem: Date
+    + buscarMateriais(palavra_chave: String): List<Material>
+    + filtrarResultados(categoria: String, tipo_documento: String, data_postagem: Date): List<Material>
+}
+
+class Categoria {
+    - id_categoria: int
+    - nome_categoria: String
+    + criarCategoria(nome_categoria: String): boolean
+    + listarCategorias(): List<Categoria>
+}
+
+class ConfiguracaoSistema {
+    - tempo_resposta: float
+    - usuarios_simultaneos: int
+    - carga_servidor: float
+    - capacidade_dados: float
+    - disponibilidade: float
+    - navegadores_suporte: String
+    - dispositivos_moveis: String
+    + validarCompatibilidade(navegador: String, dispositivo: String): boolean
+}
+
+Usuario "1" -- "1" Perfil
+Usuario "1" -- "*" Material
+Usuario "1" -- "*" Topico
+Usuario "1" -- "*" Notificacao
+Material "*" -- "*" Postagem
+Material "*" -- "1" Categoria
+Topico "*" -- "*" Comentario
+Topico "*" -- "1" Categoria
+
+@enduml
