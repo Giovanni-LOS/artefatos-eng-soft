@@ -46,9 +46,9 @@ package "Modelo de Persistência" {
     - tipoArquivo: String
     - dataUpload: Date
     - arquivo: Binario
-    + createMaterial(titulo, descricao, tipoArquivo, arquivo, categoria): Material
+    + createMaterial(titulo, descricao, tipoArquivo, arquivo, postagem): Material
     + getMaterial(id): Material
-    + updateMaterial(id, titulo, descricao, arquivo, categoria): boolean
+    + updateMaterial(id, titulo, descricao, arquivo): boolean
     + deleteMaterial(id): boolean
   }
 
@@ -58,10 +58,11 @@ package "Modelo de Persistência" {
     - tipoPostagem: String
     - titulo: String
     - conteudo: String
-    + createPostagem(titulo, conteudo, tipoPostagem): Postagem
+    + createPostagem(titulo, conteudo, tipoPostagem, categoria): Postagem
     + getPostagem(id): Postagem
     + updatePostagem(id, titulo, conteudo): boolean
     + deletePostagem(id): boolean
+    + listMateriaisByPostagem(postagemId): List<Material>
   }
 
   class Topico <<Entity>> {
@@ -124,16 +125,16 @@ package "Modelo de Persistência" {
   Usuario "1" -- "*" Postagem
   Usuario "1" -- "*" Notificacao
 
-  ' Associação simples: Categoria referenciada por Material e Topico
-  Categoria "1" -- "*" Material
+  ' Associação simples: Categoria referenciada por Postagem e Topico
+  Categoria "1" -- "*" Postagem
   Categoria "1" -- "*" Topico
+
+  ' Associação: Postagem tem vários Materiais
+  Postagem "1" -- "*" Material
 
   ' Composição: Comentario faz parte de Topico e Postagem
   Topico *-- Comentario
   Postagem *-- Comentario
-
-  ' Associação: Material referenciado em Postagem
-  Material "1" -- "*" Postagem
 
 }
 @enduml
