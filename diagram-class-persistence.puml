@@ -1,0 +1,109 @@
+@startuml
+' Estereótipo para entidades persistentes
+skinparam class {
+  BackgroundColor<<Entity>> LightYellow
+  BorderColor<<Entity>> DarkGoldenrod
+}
+
+package "Modelo de Persistência" {
+  
+  class Usuario <<Entity>> {
+    - id: bigint
+    - nickname: String
+    - nome: String
+    - email: String
+    - senha: String
+    + login(email, senha): boolean
+    + cadastrar(email, senha, nome, nickname): boolean
+  }
+
+  class Perfil <<Entity>> {
+    - id: bigint
+    - curso: String
+    - semestre: int
+    - bio: String
+    - dataAniversario: Date
+    - idade: int
+    - foto: bytea
+    + editar(curso, semestre, bio, foto): boolean
+  }
+
+  class Categoria <<Entity>> {
+    - id: bigint
+    - nome: String
+  }
+
+  class Material <<Entity>> {
+    - id: bigint
+    - titulo: String
+    - descricao: String
+    - tipoArquivo: String
+    - dataUpload: DateTime
+    - arquivo: bytea
+    - avaliacaoMedia: float
+    + upload(titulo, descricao, arquivo, categoria): boolean
+    + download(): bytea
+    + avaliar(nota): boolean
+  }
+
+  class Postagem <<Entity>> {
+    - id: bigint
+    - tipo: String
+    - titulo: String
+    - dataPostagem: DateTime
+    - comentario: String
+  }
+
+  class Topico <<Entity>> {
+    - id: bigint
+    - titulo: String
+    - conteudo: String
+    - dataCriacao: DateTime
+    + criar(titulo, conteudo, categoria): boolean
+    + responder(conteudo): boolean
+  }
+
+  class Comentario <<Entity>> {
+    - id: bigint
+    - conteudo: String
+    - dataComentario: DateTime
+  }
+
+  class Notificacao <<Entity>> {
+    - id: bigint
+    - tipo: String
+    - conteudo: String
+    - status: boolean
+    - dataEnvio: DateTime
+  }
+
+  class ConfiguracaoSistema <<Entity>> {
+    - id: bigint
+    - tempoResposta: float
+    - usuariosSimult: int
+    - navegadoresSuporte: String
+    - dispositivosMoveis: String
+    + validarCompatibilidade(nav, disp): boolean
+  }
+
+  ' Relações
+  ' Composição: Perfil não existe sem Usuario
+  Usuario *-- Perfil
+  
+  ' Associação simples: Usuario relaciona com Material, Topico e Notificacao
+  Usuario "1" -- "*" Material
+  Usuario "1" -- "*" Topico
+  Usuario "1" -- "*" Notificacao
+
+  ' Associação simples: Categoria referenciada por Material e Topico
+  Categoria "1" -- "*" Material
+  Categoria "1" -- "*" Topico
+
+  ' Composição: Postagem faz parte de Material
+  Material *-- Postagem
+
+  ' Composição: Comentario faz parte de Topico
+  Topico *-- Comentario
+
+}
+@enduml
